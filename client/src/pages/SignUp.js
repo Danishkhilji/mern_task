@@ -7,6 +7,7 @@ import { EntryPage, PageHeader } from './Style'
 import Button from "../components/Button/Button"
 import axios from "axios";
 import { useNavigate } from 'react-router'
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
 const [name,setName] =useState('')
@@ -19,14 +20,13 @@ const addUser=(e)=>{
 
 
   axios.post('http://localhost:4000/signup', {name,email,password})
-  .then(function (response) {
-    console.log(response);
+  .then(function (response) {    
+    toast.success('User registered Successfull', {  position: 'top-center'})
     navigate("/login")
-
   })
   .catch(function (error) {
-    console.log(error);
-  });
+    toast.error(error.response.data, {  position: 'top-center'})
+    });
 }
   return (
     <EntryPage>

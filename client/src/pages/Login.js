@@ -1,11 +1,12 @@
 import React,{useState} from 'react'
-import axios from 'axios'
 import {Link,useNavigate} from 'react-router-dom'
 import Input from "../components/Input/Input"
 import EntryCard from "../components/card/card"
 import InputGroup from "../components/InputGroup/InputGroup"
 import { EntryPage, PageHeader } from './Style'
+import { toast } from 'react-toastify';
 import Button from "../components/Button/Button"
+import Api from '../api'
 const Login = () => {
 
   const [name,setName] =useState('')
@@ -14,21 +15,19 @@ const Login = () => {
   const navigate =useNavigate();
   const userLogin=(e)=>{
     e.preventDefault()
-    let config = {
-      
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    axios.post('http://localhost:4000/login', {name,password},config)
+
+    Api.post('/login', {name,password},)
     .then(function (response) {
-      console.log(response);
-     // navigate("/")
+;
+      localStorage.setItem("user",JSON.stringify(response.data))
+      toast.success('Login Successfull', {  position: 'top-center'})
+       navigate("/")
   
     })
     .catch(function (error) {
-      console.log("catch ==>",  error);
+      
+      toast.error(error.response.data, {  position: 'top-center'})
+      
     });
   }
 
